@@ -17,7 +17,7 @@ RUN set -eux; \
 
 # dependencies required for running "phpize"
 # (see persistent deps below)
-ENV PHPIZE_DEPS \
+ENV PHPIZE_DEPS="\
 		autoconf \
 		dpkg-dev \
 		file \
@@ -26,7 +26,7 @@ ENV PHPIZE_DEPS \
 		libc-dev \
 		make \
 		pkg-config \
-		re2c
+		re2c"
 
 # persistent / runtime deps
 RUN set -eux; \
@@ -39,7 +39,7 @@ RUN set -eux; \
 	 ; \
 	 rm -rf /var/lib/apt/lists/*
 
-ENV PHP_INI_DIR /usr/local/etc/php
+ENV PHP_INI_DIR="/usr/local/etc/php"
 RUN set -eux; \
 	mkdir -p "$PHP_INI_DIR/conf.d"; \
 # allow running as an arbitrary user (https://github.com/docker-library/php/issues/743)
@@ -48,7 +48,7 @@ RUN set -eux; \
 	chown www-data:www-data /var/www/html; \
 	chmod 777 /var/www/html
 
-ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --disable-cgi
+ENV PHP_EXTRA_CONFIGURE_ARGS="--enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --disable-cgi"
 
 # Apply stack smash protection to functions using local buffers and alloca()
 # Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
